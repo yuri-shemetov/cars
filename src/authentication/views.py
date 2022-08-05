@@ -4,7 +4,9 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from authentication.serializers import (
-    LoginSerializer, RegistrationSerializer, UserSerializer,
+    LoginSerializer,
+    RegistrationSerializer,
+    UserSerializer,
 )
 
 
@@ -12,6 +14,7 @@ class RegistrationAPIView(APIView):
     """
     Allow all users (authenticated and not) to access this endpoint.
     """
+
     permission_classes = (AllowAny,)
     serializer_class = RegistrationSerializer
 
@@ -23,6 +26,7 @@ class RegistrationAPIView(APIView):
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+
 class LoginAPIView(APIView):
     permission_classes = (AllowAny,)
     serializer_class = LoginSerializer
@@ -32,7 +36,8 @@ class LoginAPIView(APIView):
         serializer = self.serializer_class(data=user)
         serializer.is_valid(raise_exception=True)
 
-        return Response(serializer.data, status=status.HTTP_200_OK)  
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class UserRetrieveUpdateAPIView(RetrieveUpdateAPIView):
     permission_classes = (IsAuthenticated,)

@@ -5,11 +5,11 @@ from proj.settings import SECRET_KEY
 
 
 class JWTAuthentication(authentication.BaseAuthentication):
-    authentication_header_prefix = 'Token'
+    authentication_header_prefix = "Token"
 
     def authenticate(self, request):
         """
-            None or (user, token)
+        None or (user, token)
         """
         request.user = None
         auth_header = authentication.get_authorization_header(request).split()
@@ -21,8 +21,8 @@ class JWTAuthentication(authentication.BaseAuthentication):
         elif len(auth_header) > 2:
             return None
 
-        prefix = auth_header[0].decode('utf-8')
-        token = auth_header[1].decode('utf-8')
+        prefix = auth_header[0].decode("utf-8")
+        token = auth_header[1].decode("utf-8")
 
         if prefix.lower() != auth_header_prefix:
             return None
@@ -34,16 +34,16 @@ class JWTAuthentication(authentication.BaseAuthentication):
         successful, return the user and token. If not, throw an error.
         """
         try:
-            payload = jwt.decode(token, SECRET_KEY, algorithms='HS256')
+            payload = jwt.decode(token, SECRET_KEY, algorithms="HS256")
         except Exception:
-            msg = 'Invalid authentication. Could not decode token.'
+            msg = "Invalid authentication. Could not decode token."
             raise exceptions.AuthenticationFailed(msg)
         try:
-            user = User.objects.get(pk=payload['id'])
+            user = User.objects.get(pk=payload["id"])
         except User.DoesNotExist:
-            msg = 'No user matching this token was found.'
+            msg = "No user matching this token was found."
             raise exceptions.AuthenticationFailed(msg)
         if not user.is_active:
-            msg = 'This user has been deactivated.'
+            msg = "This user has been deactivated."
             raise exceptions.AuthenticationFailed(msg)
         return (user, token)

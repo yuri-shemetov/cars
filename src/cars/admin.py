@@ -3,7 +3,7 @@ from cars.models import Car
 
 
 class CarAdmin(admin.ModelAdmin):
-    list_display = ['id', 'owner', 'name', 'brand']
+    list_display = ["id", "owner", "name", "brand"]
 
 
 admin.site.register(Car, CarAdmin)
